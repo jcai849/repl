@@ -1,0 +1,20 @@
+Usage:
+  repl [-h] process [pipe]
+
+  Spawn an interactive slave process and a named pipe, with slave
+  stdin reading from both the named pipe (created by this script)
+  as well as master stdin. This named pipe can then be written to
+  by any other editor or program, as a means of indirect access
+  to the interactive slave process (e.g. a REPL)
+
+  Options:
+    -h : Display this help message and exit.
+    process : Interactive process to spawn.
+    pipe : Name for the communication pipe to be created
+           (defaults to "\${process}repl").
+
+Dependencies:
+  unbuffer (from expect(1)), bmake
+
+Installation:
+  bmake install

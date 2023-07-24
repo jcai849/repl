@@ -1,0 +1,23 @@
+USAGE=$(cat << EOF
+  repl [-h] process [pipe]
+
+  Spawn an interactive slave process and a named pipe, with slave
+  stdin reading from both the named pipe (created by this script)
+  as well as master stdin. This named pipe can then be written to
+  by any other editor or program, as a means of indirect access
+  to the interactive slave process (e.g. a REPL)
+
+  Options:
+    -h : Display this help message and exit.
+    process : Interactive process to spawn.
+    pipe : Name for the communication pipe to be created
+           (defaults to "\${process}repl").
+EOF
+)
+if [ -z "$1" ]; then echo "$USAGE"; exit 1; fi
+if [ "$1" = "-h" ]; then echo "$USAGE"; exit 0; fi
+PIPENAME="${2:-${1}repl}"
+
+trap "rm -f $PIPENAME" 0
+mkfifo "$PIPENAME" || exit 1
+(tail -f "${PIPENAME}" & cat -) | unbuffer -p "$1"
