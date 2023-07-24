@@ -18,3 +18,8 @@ Dependencies:
 
 Installation:
   bmake install
+
+TODO:
+  - vi macro
+  - program arg handling
+  - raw tty
